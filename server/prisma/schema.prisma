@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Vehicle {
+  id           String @id @default(uuid())
+  brandId      String @map("fk_brand_id")
+  licensePlate String @unique @map("license_plate")
+  chassis      String @unique
+  renavam      String @unique
+  model        String
+  year         Int
+
+  brand Brand @relation(fields: [brandId], references: [id])
+
+  @@map("vehicle")
+}
+
+model Brand {
+  id   String @id @default(uuid())
+  name String @unique
+
+  vehicles Vehicle[]
+
+  @@map("brand")
+}

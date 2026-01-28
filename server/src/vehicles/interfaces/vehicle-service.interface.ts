@@ -1,9 +1,9 @@
-import { VehicleModel } from 'src/models/vehicle.model';
+import { Vehicle } from 'generated/prisma/client';
 
 export interface IVehicleService {
-  createVehicle(): VehicleModel;
-  getAllVehicles(): VehicleModel[];
-  getVehicleById(id: string): VehicleModel;
-  updateVehicleById(id: string): VehicleModel;
-  deleteVehicleById(id: string): VehicleModel;
+  createVehicle(): Vehicle;
+  getAllVehicles(): Vehicle[];
+  getVehicleById(id: string): Vehicle;
+  updateVehicleById(id: string): Vehicle;
+  deleteVehicleById(id: string): Vehicle;
 }

@@ -8,13 +8,13 @@ import {
   Put,
 } from '@nestjs/common';
 import { PROVIDERS_INSTANCE } from 'src/constants/providers-instance.constant';
-import { VehicleServiceContract } from 'src/interfaces/contracts/vehicle-service-contract.interface';
+import type { IVehicleService } from './interfaces/vehicle-service.interface';
 
 @Controller('vehicles')
 export class VehicleController {
   constructor(
     @Inject(PROVIDERS_INSTANCE.VEHICLE_SERVICE)
-    private readonly vehicleService: VehicleServiceContract,
+    private readonly vehicleService: IVehicleService,
   ) {}
 
   @Post()
