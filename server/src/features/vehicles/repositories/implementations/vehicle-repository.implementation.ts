@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Vehicle } from 'generated/prisma/client';
-import { PrismaService } from 'src/core/services/prisma.service';
+import { Prisma, Vehicle } from 'generated/prisma/client';
+import { PrismaConsultException } from 'src/common/exceptions/prisma-consult.exception';
+import { PrismaGeneralException } from 'src/common/exceptions/prisma-general.exception';
+import { PrismaService } from 'src/common/services/prisma.service';
 import { CreateVehicleDto } from '../../dtos/create-vehicle.dto';
 import { UpdateVehicleDto } from '../../dtos/update-vehicle.dto';
 import { VehicleRepository } from '../vehicle.repository';
@@ -15,7 +17,10 @@ export class VehicleRepositoryImpl implements VehicleRepository {
         data: createVehicleDto,
       });
     } catch (error) {
-      console.log('Error creating vehicle:', error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new PrismaGeneralException(error);
+      }
+
       throw error;
     }
   }
@@ -24,8 +29,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     try {
       return await this.prisma.vehicle.findMany();
     } catch (error) {
-      console.log('Error retrieving vehicles:', error);
-      throw error;
+      throw new PrismaConsultException(error);
     }
   }
 
@@ -35,8 +39,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
         where: { id },
       });
     } catch (error) {
-      console.log('Error retrieving vehicle:', error);
-      throw error;
+      throw new PrismaConsultException(error);
     }
   }
 
@@ -50,7 +53,10 @@ export class VehicleRepositoryImpl implements VehicleRepository {
         data: updateVehicleDto,
       });
     } catch (error) {
-      console.log('Error updating vehicle:', error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new PrismaGeneralException(error);
+      }
+
       throw error;
     }
   }
@@ -61,7 +67,10 @@ export class VehicleRepositoryImpl implements VehicleRepository {
         where: { id },
       });
     } catch (error) {
-      console.log('Error deleting vehicle:', error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new PrismaGeneralException(error);
+      }
+
       throw error;
     }
   }

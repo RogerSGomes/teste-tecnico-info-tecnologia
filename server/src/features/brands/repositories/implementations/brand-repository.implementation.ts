@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Brand } from 'generated/prisma/client';
-import { PrismaService } from 'src/core/services/prisma.service';
+import { Brand, Prisma } from 'generated/prisma/client';
+import { PrismaConsultException } from 'src/common/exceptions/prisma-consult.exception';
+import { PrismaGeneralException } from 'src/common/exceptions/prisma-general.exception';
+import { PrismaService } from 'src/common/services/prisma.service';
 import { BrandRepository } from '../brand.repository';
 
 @Injectable()
@@ -13,7 +15,10 @@ export class BrandRepositoryImpl implements BrandRepository {
         data: { name },
       });
     } catch (error) {
-      console.log('Error creating brand:', error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new PrismaGeneralException(error);
+      }
+
       throw error;
     }
   }
@@ -22,8 +27,7 @@ export class BrandRepositoryImpl implements BrandRepository {
     try {
       return await this.prisma.brand.findMany();
     } catch (error) {
-      console.log('Error retrieving brands:', error);
-      throw error;
+      throw new PrismaConsultException(error);
     }
   }
 
@@ -33,8 +37,7 @@ export class BrandRepositoryImpl implements BrandRepository {
         where: { id },
       });
     } catch (error) {
-      console.log('Error retrieving brand:', error);
-      throw error;
+      throw new PrismaConsultException(error);
     }
   }
 
@@ -45,7 +48,10 @@ export class BrandRepositoryImpl implements BrandRepository {
         data: { name },
       });
     } catch (error) {
-      console.log('Error updating brand:', error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new PrismaGeneralException(error);
+      }
+
       throw error;
     }
   }
@@ -56,7 +62,10 @@ export class BrandRepositoryImpl implements BrandRepository {
         where: { id },
       });
     } catch (error) {
-      console.log('Error deleting brand:', error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new PrismaGeneralException(error);
+      }
+
       throw error;
     }
   }
