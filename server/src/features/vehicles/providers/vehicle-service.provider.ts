@@ -1,6 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { PROVIDERS_INSTANCE } from 'src/constants/providers-instance.constant';
-import { VehicleService } from 'src/vehicles/vehicle.service';
+import { VehicleService } from '../vehicle.service';
 
 export const VehicleServiceProvider: Provider = {
   provide: PROVIDERS_INSTANCE.VEHICLE_SERVICE,
