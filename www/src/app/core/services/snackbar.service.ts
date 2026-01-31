@@ -7,11 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SnackbarService {
   private readonly matSnackbar = inject(MatSnackBar);
 
-  showMessage(
-    message: string,
-    action: string = 'Close',
-    duration: number = 3000,
-  ): void {
-    this.matSnackbar.open(message, action, { duration });
+  showMessage(message: string, duration: number = 3000): void {
+    this.matSnackbar.open(message, undefined, { duration });
   }
 }
