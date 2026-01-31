@@ -6,8 +6,10 @@ import { filter, map, switchMap } from 'rxjs';
 import { SnackbarService } from '../../../../core/services/snackbar.service';
 import { BaseForm } from '../../../../core/tools/base-form.tool';
 import { SHARED_IMPORTS } from '../../../../shared';
+import { SelectInputOption } from '../../../../shared/components/select-input/select-input.component';
 import { APP_ROUTES } from '../../../../shared/constants/app-routes.const';
 import { BrandModel } from '../../models/brand.model';
+import { VehicleModelModel } from '../../models/vehicle-model.model';
 import { VehicleModel } from '../../models/vehicle.model';
 import { BrandsService } from '../../services/brands.service';
 import { VehiclesService } from '../../services/vehicles.service';
@@ -29,47 +31,70 @@ export class VehicleUpsertComponent
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly vehiclesService = inject(VehiclesService);
-  private readonly brandsService = inject(BrandsService)
+  private readonly brandsService = inject(BrandsService);
   private readonly snackbarService = inject(SnackbarService);
 
   // -------------- Component states --------------
   isEdit = false;
 
   // -------------- Form options --------------
-  brands: BrandModel[] = [];
-  models: string[] = [];
+  brandOptions: SelectInputOption<BrandModel>[] = [];
+  modelOptions: SelectInputOption<VehicleModelModel>[] = [];
 
   // -------------- BaseForm implementation --------------
   override defaultFormValue: VehicleModel = {
     id: '',
-    placa: '',
-    chassi: '',
+    licensePlate: '',
+    chassis: '',
     renavam: '',
-    modelo: '',
-    marca: '',
-    ano: new Date().getFullYear(),
+    brandId: '',
+    modelId: '',
+    year: new Date().getFullYear(),
   };
 
   override buildForm() {
-    const { id, placa, chassi, renavam, modelo, marca, ano } =
+    const { id, licensePlate, chassis, renavam, brandId, modelId, year } =
       this.defaultFormValue;
 
     this.form = this.formBuilder.group({
       id: [id],
-      placa: [placa, [Validators.required]],
-      chassi: [
-        chassi,
+      licensePlate: [licensePlate, [Validators.required]],
+      chassis: [
+        chassis,
         [Validators.required, Validators.pattern(/^[A-HJ-NPR-Z0-9]{17}$/)],
       ],
       renavam: [renavam, [Validators.required]],
-      modelo: [modelo, [Validators.required]],
-      marca: [marca, [Validators.required]],
-      ano: [ano, [Validators.required]],
+      brandId: [brandId, [Validators.required]],
+      modelId: [modelId, [Validators.required]],
+      year: [
+        year,
+        [
+          Validators.required,
+          Validators.min(1900),
+          Validators.max(new Date().getFullYear()),
+        ],
+      ],
     });
+
+    this.getControl('brandId')
+      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((brandId) => {
+        const selectedBrand = this.brandOptions.find(
+          (brand) => brand.id === brandId,
+        );
+
+        this.modelOptions =
+          selectedBrand?.value?.brandModels?.map((model) => ({
+            id: model.id,
+            label: model.name,
+            value: model,
+          })) || [];
+
+        this.getControl('modelId').setValue('');
+      });
   }
 
   // -------------- Component lifecycle --------------
-
   ngOnInit() {
     this.loadMetadata();
     this.buildForm();
@@ -87,12 +112,16 @@ export class VehicleUpsertComponent
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (brands) => {
-          this.brands = brands;
-          this.enableControl('marca');
+          this.brandOptions = brands.map((brand) => ({
+            id: brand.id,
+            label: brand.name,
+            value: brand,
+          }));
+          this.enableControl('modelId');
         },
         error: () => {
-          this.brands = [];
-          this.disableControl('marca');
+          this.brandOptions = [];
+          this.disableControl('modelId');
           this.snackbarService.showMessage(
             'Failed to load vehicle brands. Please try again later.',
           );
@@ -111,7 +140,7 @@ export class VehicleUpsertComponent
       .subscribe({
         next: (vehicle) => {
           this.isEdit = true;
-          this.patchFormValue(vehicle)
+          this.patchFormValue(vehicle);
         },
         error: () => {
           this.handleGoBack();

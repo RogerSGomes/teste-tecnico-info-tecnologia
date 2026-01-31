@@ -71,6 +71,19 @@ export class VehicleListComponent implements OnInit {
   }
 
   handleDeleteVehicle(vehicle: VehicleModel) {
-    this.snackbarService.showMessage('Delete vehicle not implemented yet.');
+    this.vehiclesService
+      .deleteVehicle(vehicle.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.loadVehicles();
+          this.snackbarService.showMessage('Vehicle deleted successfully.');
+        },
+        error: () => {
+          this.snackbarService.showMessage(
+            'Failed to delete vehicle. Please try again later.',
+          );
+        },
+      });
   }
 }

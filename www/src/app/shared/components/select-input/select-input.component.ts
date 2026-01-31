@@ -4,6 +4,12 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { MATERIAL_IMPORTS } from '../../material';
 
+export interface SelectInputOption<T> {
+  id: string;
+  label: string;
+  value: T;
+}
+
 @Component({
   imports: [CommonModule, ReactiveFormsModule, MATERIAL_IMPORTS],
   selector: 'app-select-input',
@@ -16,7 +22,7 @@ export class SelectInputComponent<T> {
 
   label = input.required<string>();
   placeholder = input.required<string>();
-  options = input.required<T[]>();
+  options = input.required<SelectInputOption<T>[]>();
 
   hintLabel = input('');
   errorLabel = input('');

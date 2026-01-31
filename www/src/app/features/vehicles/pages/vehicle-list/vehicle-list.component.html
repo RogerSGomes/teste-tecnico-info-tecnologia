@@ -5,7 +5,8 @@
 </ng-container>
 <ng-template #loadedVehicles>
   <div *ngFor="let vehicle of vehicles">
-    {{ vehicle.placa }} - {{ vehicle.modelo }} - {{ vehicle.marca }}
+    {{ vehicle.licensePlate }} - {{ vehicle.model!.name }} -
+    {{ vehicle.brand!.name }}
     <app-button label="Detalhes" (handleClick)="handleViewDetails(vehicle)" />
     <app-button label="Editar" (handleClick)="handleEditVehicle(vehicle)" />
     <app-button label="Excluir" (handleClick)="handleDeleteVehicle(vehicle)" />

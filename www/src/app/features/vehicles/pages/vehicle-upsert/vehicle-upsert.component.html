@@ -2,16 +2,16 @@
 
 <form [formGroup]="form">
   <app-input
-    [control]="getControl('placa')"
-    name="placa"
+    [control]="getControl('licensePlate')"
+    name="licensePlate"
     label="Placa"
     placeholder="Digite a placa do veículo"
     errorLabel="Informe uma placa válida"
     [mask]="masks.PLATE"
   />
   <app-input
-    [control]="getControl('chassi')"
-    name="chassi"
+    [control]="getControl('chassis')"
+    name="chassis"
     label="Chassi"
     placeholder="Digite o chassi do veículo"
     errorLabel="Informe um chassi válido"
@@ -26,21 +26,31 @@
     [mask]="masks.RENAVAM"
   />
   <app-select-input
-    [control]="getControl('marca')"
-    [options]="brands"
+    [control]="getControl('brandId')"
+    [options]="brandOptions"
     label="Marca"
     placeholder="Digite a marca do veículo"
     errorLabel="Informe a marca do veículo"
     clearable
   />
   <app-select-input
-    [control]="getControl('modelo')"
-    [options]="models"
+    [control]="getControl('modelId')"
+    [options]="modelOptions"
     label="Modelo"
     placeholder="Digite o modelo do veículo"
     errorLabel="Informe o modelo do veículo"
     clearable
-  />=
+  />
+  <app-input
+    [control]="getControl('year')"
+    name="year"
+    label="Ano"
+    [minLength]="4"
+    [maxLength]="4"
+    placeholder="Digite o ano do veículo"
+    errorLabel="Informe o ano do veículo"
+    [mask]="masks.ONLY_NUMBER"
+  />
   <app-button
     label="{{ isEdit ? 'Atualizar Veículo' : 'Cadastrar Veículo' }}"
     [disabled]="form.invalid"

@@ -3,6 +3,6 @@ export const MASKS = {
   ONLY_STRING: '',
   MONEY: 'separator.2',
   PLATE: 'SSS0A00',
-  CHASSI: 'AAAAAAAAAAAAAAAAAA',
+  CHASSI: 'AAAAAAAAAAAAAAAAA',
   RENAVAM: '000.000.000-00',
 };

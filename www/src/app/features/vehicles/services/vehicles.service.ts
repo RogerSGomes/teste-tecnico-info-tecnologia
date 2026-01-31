@@ -16,8 +16,14 @@ export class VehiclesService {
 
   constructor(private readonly http: HttpClient) {}
 
-  createVehicle(vehicle: VehicleModel): Observable<VehicleModel> {
-    return this.http.post<VehicleModel>(this.API_ROUTES.CREATE, vehicle);
+  createVehicle({
+    id,
+    ...vehicleWithoutId
+  }: VehicleModel): Observable<VehicleModel> {
+    return this.http.post<VehicleModel>(
+      this.API_ROUTES.CREATE,
+      vehicleWithoutId,
+    );
   }
 
   getVehicles(): Observable<VehicleModel[]> {
@@ -32,7 +38,10 @@ export class VehiclesService {
     id: string,
     updatedVehicle: Partial<VehicleModel>,
   ): Observable<VehicleModel> {
-    return this.http.put<VehicleModel>(this.API_ROUTES.UPDATE(id), updatedVehicle);
+    return this.http.put<VehicleModel>(
+      this.API_ROUTES.UPDATE(id),
+      updatedVehicle,
+    );
   }
 
   deleteVehicle(id: string): Observable<VehicleModel> {

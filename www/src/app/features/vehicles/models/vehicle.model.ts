@@ -1,9 +1,14 @@
+import { BrandModel } from './brand.model';
+import { VehicleModelModel } from './vehicle-model.model';
+
 export interface VehicleModel {
   id: string;
-  placa: string;
-  chassi: string;
+  brandId: string;
+  modelId: string;
+  licensePlate: string;
+  chassis: string;
   renavam: string;
-  modelo: string;
-  marca: string;
-  ano: number;
+  year: number;
+  brand?: BrandModel;
+  model?: VehicleModelModel;
 }
