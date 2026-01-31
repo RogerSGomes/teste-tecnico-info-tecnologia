@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SnackbarService } from '../../../../core/services/snackbar.service';
 import { SHARED_IMPORTS } from '../../../../shared';
 import { APP_ROUTES } from '../../../../shared/constants/app-routes.const';
+import { MASKS } from '../../../../shared/constants/masks.const';
 import { VehicleModel } from '../../models/vehicle.model';
 import { VehiclesService } from '../../services/vehicles.service';
 
@@ -16,6 +17,9 @@ import { VehiclesService } from '../../services/vehicles.service';
 export class VehicleListComponent implements OnInit {
   // -------------- Refs --------------
   private readonly destroyRef = inject(DestroyRef);
+
+  // -------------- Constants --------------
+  readonly MASKS = MASKS;
 
   // -------------- Services --------------
   private readonly router = inject(Router);
@@ -45,7 +49,7 @@ export class VehicleListComponent implements OnInit {
         },
         error: () => {
           this.snackbarService.showMessage(
-            'Failed to load vehicles. Please try again later.',
+            'Falha ao carregar lista de veículos. Por favor, tente novamente mais tarde.',
           );
 
           this.isLoading = false;
@@ -77,11 +81,11 @@ export class VehicleListComponent implements OnInit {
       .subscribe({
         next: () => {
           this.loadVehicles();
-          this.snackbarService.showMessage('Vehicle deleted successfully.');
+          this.snackbarService.showMessage('Veículo excluído com sucesso.');
         },
         error: () => {
           this.snackbarService.showMessage(
-            'Failed to delete vehicle. Please try again later.',
+            'Falha ao excluir veículo. Por favor, tente novamente mais tarde.',
           );
         },
       });

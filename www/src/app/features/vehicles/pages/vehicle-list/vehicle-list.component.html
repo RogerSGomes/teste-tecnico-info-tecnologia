@@ -10,21 +10,21 @@
       label="Adicionar Veículo"
       appearance="outlined_background"
       size="small"
+      icon="add"
+      iconPosition="left"
       (click)="handleCreateVehicle()"
       (keydown.enter)="handleCreateVehicle()"
     />
   </header>
   <section class="p-5">
-    <ng-container *ngIf="!isLoading; else loading">
-      <div class="flex flex-col gap-4 divide-y divide-slate-300">
-        <div
-          class="grid grid-cols-12 items-center gap-5 text-sm text-slate-700"
-        >
-          <span class="col-span-2 p-2">Modelo</span>
-          <span class="col-span-2 p-2">Marca</span>
-          <span class="col-span-2 p-2">Placa</span>
-          <span class="col-span-6 p-2 pr-5 text-right">Ações</span>
-        </div>
+    <div class="flex flex-col gap-4 divide-y divide-slate-300">
+      <div class="grid grid-cols-12 items-center gap-5 text-sm text-slate-700">
+        <span class="col-span-2 p-2">Modelo</span>
+        <span class="col-span-2 p-2">Marca</span>
+        <span class="col-span-2 p-2">Placa</span>
+        <span class="col-span-6 p-2 pr-5 text-right">Ações</span>
+      </div>
+      <ng-container *ngIf="vehicles.length; else noVehicles">
         <div
           *ngFor="let vehicle of vehicles; let i = index"
           class="grid grid-cols-12 items-center gap-5 text-sm text-gray-500"
@@ -36,7 +36,7 @@
             {{ vehicle.brand?.name || '--' }}
           </span>
           <span class="col-span-2 p-2 text-slate-600">
-            {{ vehicle.licensePlate || '--' }}
+            {{ vehicle.licensePlate | mask: MASKS.PLATE || '--' }}
           </span>
           <div class="col-span-6 flex justify-end p-2 gap-2">
             <app-icon
@@ -65,8 +65,20 @@
             />
           </div>
         </div>
-      </div>
-    </ng-container>
-    <ng-template #loading>Carregando veículos...</ng-template>
+      </ng-container>
+      <ng-template #noVehicles>
+        <div
+          class="flex w-full flex-col items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-6"
+        >
+          <app-icon
+            name="warning_amber"
+            type="rounded"
+            size="xl"
+            class="text-gray-500"
+          />
+          <span class="text-sm text-gray-500"> Nenhum veículo cadastrado </span>
+        </div>
+      </ng-template>
+    </div>
   </section>
 </main>

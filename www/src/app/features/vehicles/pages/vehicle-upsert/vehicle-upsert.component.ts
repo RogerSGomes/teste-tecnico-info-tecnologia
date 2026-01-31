@@ -125,7 +125,7 @@ export class VehicleUpsertComponent
           this.brandOptions = [];
           this.disableControl('modelId');
           this.snackbarService.showMessage(
-            'Failed to load vehicle brands. Please try again later.',
+            'Falha ao carregar marcas de veículos. Por favor, tente novamente mais tarde.',
           );
         },
       });
@@ -153,7 +153,7 @@ export class VehicleUpsertComponent
         error: () => {
           this.handleGoBack();
           this.snackbarService.showMessage(
-            'Failed to load vehicle details. Please try again later.',
+            'Falha ao carregar detalhes do veículo. Por favor, tente novamente mais tarde.',
           );
         },
       });
@@ -168,7 +168,7 @@ export class VehicleUpsertComponent
     this.vehiclesService.createVehicle(this.getFormValue()).subscribe({
       next: () => {
         this.handleGoBack();
-        this.snackbarService.showMessage('Vehicle created successfully!');
+        this.snackbarService.showMessage('Veículo criado com sucesso!');
       },
     });
   }
@@ -180,7 +180,7 @@ export class VehicleUpsertComponent
       .subscribe({
         next: () => {
           this.handleGoBack();
-          this.snackbarService.showMessage('Vehicle updated successfully!');
+          this.snackbarService.showMessage('Veículo atualizado com sucesso!');
         },
       });
   }

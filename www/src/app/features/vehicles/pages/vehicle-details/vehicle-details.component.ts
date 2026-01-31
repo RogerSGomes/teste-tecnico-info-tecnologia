@@ -57,7 +57,7 @@ export class VehicleDetailsComponent implements OnInit {
         },
         error: () => {
           this.snackbarService.showMessage(
-            'Failed to load vehicle details. Please try again later.',
+            'Falha ao carregar detalhes do veículo. Por favor, tente novamente mais tarde.',
           );
           this.handleGoBack();
         },
