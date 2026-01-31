@@ -18,9 +18,9 @@ export class VehicleListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   // -------------- Services --------------
+  private readonly router = inject(Router);
   private readonly vehiclesService = inject(VehiclesService);
   private readonly snackbarService = inject(SnackbarService);
-  private readonly router = inject(Router);
 
   // -------------- Component states --------------
   isLoading = false;

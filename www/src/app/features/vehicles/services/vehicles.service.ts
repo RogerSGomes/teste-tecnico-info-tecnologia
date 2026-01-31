@@ -5,7 +5,7 @@ import { VehicleModel } from '../models/vehicle.model';
 
 @Injectable()
 export class VehiclesService {
-  private readonly baseURL = '/api/vehicles';
+  private readonly baseURL = 'http://localhost:3000/vehicles';
   private readonly API_ROUTES = {
     CREATE: this.baseURL,
     GET_ALL: this.baseURL,

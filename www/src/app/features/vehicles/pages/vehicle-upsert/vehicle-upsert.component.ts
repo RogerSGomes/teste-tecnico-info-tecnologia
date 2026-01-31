@@ -34,7 +34,6 @@ export class VehicleUpsertComponent
 
   // -------------- Component states --------------
   isEdit = false;
-  currentYear = new Date().getFullYear();
 
   // -------------- Form options --------------
   brands: BrandModel[] = [];
@@ -67,12 +66,6 @@ export class VehicleUpsertComponent
       marca: [marca, [Validators.required]],
       ano: [ano, [Validators.required]],
     });
-
-    this.getControl('marca')
-      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((newBrand) => {
-        this.loadModelsByBrand(newBrand);
-      });
   }
 
   // -------------- Component lifecycle --------------
@@ -98,40 +91,11 @@ export class VehicleUpsertComponent
           this.enableControl('marca');
         },
         error: () => {
+          this.brands = [];
+          this.disableControl('marca');
           this.snackbarService.showMessage(
             'Failed to load vehicle brands. Please try again later.',
           );
-
-          this.disableControl('marca');
-          this.brands = [];
-        },
-      });
-  }
-
-  loadModelsByBrand(brand: string) {
-    this.setControlValue('modelo', '');
-
-    if (!brand) {
-      this.models = [];
-      this.disableControl('modelo');
-      return;
-    }
-
-    this.brandsService
-      .getModelsByBrand(brand)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (models) => {
-          this.models = models;
-          this.enableControl('modelo');
-        },
-        error: () => {
-          this.snackbarService.showMessage(
-            'Failed to load vehicle models. Please try again later.',
-          );
-
-          this.disableControl('modelo');
-          this.models = [];
         },
       });
   }
@@ -147,35 +111,27 @@ export class VehicleUpsertComponent
       .subscribe({
         next: (vehicle) => {
           this.isEdit = true;
-          this.patchFormValue(vehicle);
+          this.patchFormValue(vehicle)
         },
         error: () => {
+          this.handleGoBack();
           this.snackbarService.showMessage(
             'Failed to load vehicle details. Please try again later.',
           );
-          this.handleGoBack();
         },
       });
   }
 
   handleSubmit() {
-    if (this.isFormInvalid()) {
-      return;
-    }
-
-    if (this.isEdit) {
-      this.handleUpdateVehicle();
-      return;
-    }
-
-    this.handleCreateVehicle();
+    if (this.isFormInvalid()) return;
+    this.isEdit ? this.handleUpdateVehicle() : this.handleCreateVehicle();
   }
 
   handleCreateVehicle() {
     this.vehiclesService.createVehicle(this.getFormValue()).subscribe({
       next: () => {
-        this.snackbarService.showMessage('Vehicle created successfully!');
         this.handleGoBack();
+        this.snackbarService.showMessage('Vehicle created successfully!');
       },
     });
   }
@@ -186,8 +142,8 @@ export class VehicleUpsertComponent
       .updateVehicle(vehicleId, this.getFormValue())
       .subscribe({
         next: () => {
-          this.snackbarService.showMessage('Vehicle updated successfully!');
           this.handleGoBack();
+          this.snackbarService.showMessage('Vehicle updated successfully!');
         },
       });
   }

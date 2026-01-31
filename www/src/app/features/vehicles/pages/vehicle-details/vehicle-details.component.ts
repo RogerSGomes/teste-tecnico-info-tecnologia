@@ -23,10 +23,10 @@ export class VehicleDetailsComponent implements OnInit {
   readonly MASKS = MASKS;
 
   // -------------- Services --------------
-  private readonly vehiclesService = inject(VehiclesService);
-  private readonly snackbarService = inject(SnackbarService);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly vehiclesService = inject(VehiclesService);
+  private readonly snackbarService = inject(SnackbarService);
 
   // -------------- Component states --------------
   vehicle: VehicleModel | null = null;

@@ -5,7 +5,7 @@ import { BrandModel } from '../models/brand.model';
 
 @Injectable()
 export class BrandsService {
-  private readonly baseURL = '/api/brands';
+  private readonly baseURL = 'http://localhost:3000/brands';
   private readonly API_ROUTES = {
     CREATE: this.baseURL,
     GET_ALL: this.baseURL,
