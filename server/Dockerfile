@@ -21,11 +21,8 @@ ENV DATABASE_URL=${DATABASE_URL}
 # copia o restante do projeto
 COPY . .
 
-# gera o prisma client
-RUN npx prisma migrate deploy && npx prisma generate
-
-# Executa o build do projeto
-RUN npm run build
+# gera o prisma client e executa o build do projeto
+RUN npm run db:setup && npm run build
 
 # expõe a porta do backend
 EXPOSE 3000
