@@ -1,50 +1,49 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { VehicleModel } from '../models/vehicle.model';
+import { ApiService } from './../../../core/services/api.service';
 
 @Injectable()
 export class VehiclesService {
-  private readonly baseURL = 'http://localhost:3000/vehicles';
   private readonly API_ROUTES = {
-    CREATE: this.baseURL,
-    GET_ALL: this.baseURL,
-    GET_BY_ID: (id: string) => `${this.baseURL}/${id}`,
-    UPDATE: (id: string) => `${this.baseURL}/${id}`,
-    DELETE: (id: string) => `${this.baseURL}/${id}`,
+    CREATE: '/vehicles',
+    GET_ALL: '/vehicles',
+    GET_BY_ID: (id: string) => `/vehicles/${id}`,
+    UPDATE: (id: string) => `/vehicles/${id}`,
+    DELETE: (id: string) => `/vehicles/${id}`,
   };
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly apiService: ApiService) {}
 
   createVehicle({
     id,
     ...vehicleWithoutId
   }: VehicleModel): Observable<VehicleModel> {
-    return this.http.post<VehicleModel>(
+    return this.apiService.post<Omit<VehicleModel, 'id'>, VehicleModel>(
       this.API_ROUTES.CREATE,
       vehicleWithoutId,
     );
   }
 
   getVehicles(): Observable<VehicleModel[]> {
-    return this.http.get<VehicleModel[]>(this.API_ROUTES.GET_ALL);
+    return this.apiService.get<VehicleModel[]>(this.API_ROUTES.GET_ALL);
   }
 
   getVehicleById(id: string): Observable<VehicleModel> {
-    return this.http.get<VehicleModel>(this.API_ROUTES.GET_BY_ID(id));
+    return this.apiService.get<VehicleModel>(this.API_ROUTES.GET_BY_ID(id));
   }
 
   updateVehicle(
     id: string,
     updatedVehicle: Partial<VehicleModel>,
   ): Observable<VehicleModel> {
-    return this.http.put<VehicleModel>(
+    return this.apiService.put<Partial<VehicleModel>, VehicleModel>(
       this.API_ROUTES.UPDATE(id),
       updatedVehicle,
     );
   }
 
   deleteVehicle(id: string): Observable<VehicleModel> {
-    return this.http.delete<VehicleModel>(this.API_ROUTES.DELETE(id));
+    return this.apiService.delete<VehicleModel>(this.API_ROUTES.DELETE(id));
   }
 }
