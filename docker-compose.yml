@@ -1,0 +1,26 @@
+services:
+  server:
+    build:
+      context: ./server
+      args:
+        NODE_ENV: "production"
+        DATABASE_URL: "file:./generated/database/dev.db"
+    container_name: server
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  www:
+    build: ./www
+    container_name: www
+    ports:
+      - "4200:80"
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
