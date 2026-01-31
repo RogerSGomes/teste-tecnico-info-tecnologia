@@ -1,7 +1,29 @@
 <button
+  type="button"
+  [title]="label()"
+  [ngClass]="
+    buttonVariants({
+      appearance: appearance(),
+      size: size(),
+      variant: variant(),
+      disabled: disabled(),
+    })
+  "
+  class="w-full"
   [disabled]="disabled()"
-  (click)="$event.preventDefault(); handleClick.emit()"
-  class="button"
+  (keydown.enter)="$event.preventDefault()"
 >
+  <app-icon
+    *ngIf="icon() && iconPosition() === 'left'"
+    [name]="icon()"
+    [size]="size() === 'small' ? 'xs' : 'sm'"
+    [type]="iconType()"
+  />
   {{ label() }}
+  <app-icon
+    *ngIf="icon() && iconPosition() === 'right'"
+    [name]="icon()"
+    [size]="size() === 'small' ? 'xs' : 'sm'"
+    [type]="iconType()"
+  />
 </button>

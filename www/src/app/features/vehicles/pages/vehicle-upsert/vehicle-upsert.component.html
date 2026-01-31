@@ -1,59 +1,88 @@
-<app-button label="Voltar" (handleClick)="handleGoBack()" />
-
-<form [formGroup]="form">
-  <app-input
-    [control]="getControl('licensePlate')"
-    name="licensePlate"
-    label="Placa"
-    placeholder="Digite a placa do veículo"
-    errorLabel="Informe uma placa válida"
-    [mask]="masks.PLATE"
-  />
-  <app-input
-    [control]="getControl('chassis')"
-    name="chassis"
-    label="Chassi"
-    placeholder="Digite o chassi do veículo"
-    errorLabel="Informe um chassi válido"
-    [mask]="masks.CHASSI"
-  />
-  <app-input
-    [control]="getControl('renavam')"
-    name="renavam"
-    label="Renavam"
-    placeholder="Digite o renavam do veículo"
-    errorLabel="Informe um renavam válido"
-    [mask]="masks.RENAVAM"
-  />
-  <app-select-input
-    [control]="getControl('brandId')"
-    [options]="brandOptions"
-    label="Marca"
-    placeholder="Digite a marca do veículo"
-    errorLabel="Informe a marca do veículo"
-    clearable
-  />
-  <app-select-input
-    [control]="getControl('modelId')"
-    [options]="modelOptions"
-    label="Modelo"
-    placeholder="Digite o modelo do veículo"
-    errorLabel="Informe o modelo do veículo"
-    clearable
-  />
-  <app-input
-    [control]="getControl('year')"
-    name="year"
-    label="Ano"
-    [minLength]="4"
-    [maxLength]="4"
-    placeholder="Digite o ano do veículo"
-    errorLabel="Informe o ano do veículo"
-    [mask]="masks.ONLY_NUMBER"
-  />
-  <app-button
-    label="{{ isEdit ? 'Atualizar Veículo' : 'Cadastrar Veículo' }}"
-    [disabled]="form.invalid"
-    (handleClick)="handleSubmit()"
-  />
-</form>
+<main
+  class="m-6 bg-white divide-y divide-slate-300 overflow-hidden rounded-lg border border-slate-300"
+>
+  <header class="flex items-center px-5 py-4 gap-5">
+    <app-icon
+      name="arrow_back"
+      type="outlined"
+      (click)="handleGoBack()"
+      (keydown.enter)="handleGoBack()"
+      class="cursor-pointer text-sky-700"
+    />
+    <app-loadable-title
+      [isLoading]="isLoading"
+      title="{{ isEdit ? 'Atualizar veículo' : 'Cadastro de veículo' }}"
+      description="{{ vehicle?.model?.name }} {{ vehicle?.year }}"
+    />
+  </header>
+  <form class="flex flex-col p-5" [formGroup]="form">
+    <div class="grid grid-cols-12 gap-5">
+      <app-select-input
+        [control]="getControl('brandId')"
+        [options]="brandOptions"
+        label="Marca"
+        placeholder="Digite a marca do veículo"
+        errorLabel="Informe a marca do veículo"
+        clearable
+        class="col-span-4"
+      />
+      <app-select-input
+        [control]="getControl('modelId')"
+        [options]="modelOptions"
+        label="Modelo"
+        placeholder="Digite o modelo do veículo"
+        errorLabel="Informe o modelo do veículo"
+        clearable
+        class="col-span-4"
+      />
+      <app-input
+        [control]="getControl('year')"
+        name="year"
+        label="Ano"
+        [minLength]="4"
+        [maxLength]="4"
+        placeholder="Digite o ano do veículo"
+        errorLabel="Informe o ano do veículo"
+        [mask]="masks.ONLY_NUMBER"
+        class="col-span-4"
+      />
+    </div>
+    <div class="grid grid-cols-12 gap-5">
+      <app-input
+        [control]="getControl('licensePlate')"
+        name="licensePlate"
+        label="Placa"
+        placeholder="Digite a placa do veículo"
+        errorLabel="Informe uma placa válida"
+        [mask]="masks.PLATE"
+        class="col-span-4"
+      />
+      <app-input
+        [control]="getControl('chassis')"
+        name="chassis"
+        label="Chassi"
+        placeholder="Digite o chassi do veículo"
+        errorLabel="Informe um chassi válido"
+        [mask]="masks.CHASSI"
+        class="col-span-4"
+      />
+      <app-input
+        [control]="getControl('renavam')"
+        name="renavam"
+        label="Renavam"
+        placeholder="Digite o renavam do veículo"
+        errorLabel="Informe um renavam válido"
+        [mask]="masks.RENAVAM"
+        class="col-span-4"
+      />
+    </div>
+    <div class="w-50 self-end">
+      <app-button
+        label="{{ isEdit ? 'Atualizar Veículo' : 'Cadastrar Veículo' }}"
+        size="normal"
+        [disabled]="form.invalid"
+        (click)="handleSubmit()"
+      />
+    </div>
+  </form>
+</main>

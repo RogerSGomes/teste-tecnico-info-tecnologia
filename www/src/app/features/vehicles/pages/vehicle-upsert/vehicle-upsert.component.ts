@@ -2,11 +2,11 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, switchMap } from 'rxjs';
+import { filter, finalize, map, switchMap, tap } from 'rxjs';
 import { SnackbarService } from '../../../../core/services/snackbar.service';
 import { BaseForm } from '../../../../core/tools/base-form.tool';
 import { SHARED_IMPORTS } from '../../../../shared';
-import { SelectInputOption } from '../../../../shared/components/select-input/select-input.component';
+import { SelectInputOption } from '../../../../shared/components/inputs/select-input/select-input.component';
 import { APP_ROUTES } from '../../../../shared/constants/app-routes.const';
 import { BrandModel } from '../../models/brand.model';
 import { VehicleModelModel } from '../../models/vehicle-model.model';
@@ -36,6 +36,8 @@ export class VehicleUpsertComponent
 
   // -------------- Component states --------------
   isEdit = false;
+  isLoading = false;
+  vehicle: VehicleModel | null = null;
 
   // -------------- Form options --------------
   brandOptions: SelectInputOption<BrandModel>[] = [];
@@ -133,13 +135,19 @@ export class VehicleUpsertComponent
     this.activatedRoute.paramMap
       .pipe(
         map((params) => params.get('id')),
+        tap((id) => (this.isLoading = !!id)),
         filter((id): id is string => !!id),
-        switchMap((id) => this.vehiclesService.getVehicleById(id)),
+        switchMap((id) =>
+          this.vehiclesService
+            .getVehicleById(id)
+            .pipe(finalize(() => (this.isLoading = false))),
+        ),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: (vehicle) => {
           this.isEdit = true;
+          this.vehicle = vehicle;
           this.patchFormValue(vehicle);
         },
         error: () => {

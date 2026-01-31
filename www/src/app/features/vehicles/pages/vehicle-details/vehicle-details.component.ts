@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, switchMap } from 'rxjs';
+import { filter, finalize, map, switchMap, tap } from 'rxjs';
 import { SnackbarService } from '../../../../core/services/snackbar.service';
 import { SHARED_IMPORTS } from '../../../../shared';
 import { APP_ROUTES } from '../../../../shared/constants/app-routes.const';
@@ -29,6 +29,7 @@ export class VehicleDetailsComponent implements OnInit {
   private readonly snackbarService = inject(SnackbarService);
 
   // -------------- Component states --------------
+  isLoading = false;
   vehicle: VehicleModel | null = null;
 
   // -------------- Component lifecycle --------------
@@ -41,8 +42,13 @@ export class VehicleDetailsComponent implements OnInit {
     this.activatedRoute.paramMap
       .pipe(
         map((params) => params.get('id')),
+        tap((id) => (this.isLoading = !!id)),
         filter((id): id is string => !!id),
-        switchMap((id) => this.vehiclesService.getVehicleById(id)),
+        switchMap((id) =>
+          this.vehiclesService
+            .getVehicleById(id)
+            .pipe(finalize(() => (this.isLoading = false))),
+        ),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({

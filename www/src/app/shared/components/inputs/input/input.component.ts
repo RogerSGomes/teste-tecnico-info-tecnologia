@@ -3,7 +3,7 @@ import { Component, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { NgxMaskDirective } from 'ngx-mask';
-import { MATERIAL_IMPORTS } from '../../material';
+import { MATERIAL_IMPORTS } from '../../../material';
 
 @Component({
   imports: [

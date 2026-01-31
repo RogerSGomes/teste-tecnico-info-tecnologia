@@ -1,0 +1,19 @@
+<div *ngIf="!isLoading(); else loading" class="flex flex-col">
+  <span class="text-sm font-medium text-slate-700">
+    {{ title() }}
+  </span>
+  <span class="whitespace-pre-line wrap-break-word text-sm text-slate-600">
+    {{ description() || '' }}
+  </span>
+</div>
+
+<ng-template #loading>
+  <div class="flex w-full flex-col justify-between gap-1">
+    <div
+      class="flex h-4.5 w-1/4 min-w-50 items-center justify-center animate-pulse bg-slate-300 rounded-sm"
+    ></div>
+    <div
+      class="flex h-4.5 w-1/2 min-w-50 items-center justify-center animate-pulse bg-slate-300 rounded-sm"
+    ></div>
+  </div>
+</ng-template>

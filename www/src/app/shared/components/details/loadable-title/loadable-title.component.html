@@ -1,0 +1,21 @@
+<ng-container *ngIf="!isLoading() && isLoading() !== undefined; else loading">
+  <section class="flex flex-col gap-1">
+    <span class="text-lg font-medium text-sky-700">
+      {{ title() }}
+    </span>
+    <span class="text-md font-normal text-slate-600">
+      {{ description() }}
+    </span>
+  </section>
+</ng-container>
+
+<ng-template #loading>
+  <section class="flex flex-col gap-1">
+    <div
+      class="flex h-6 w-1/2 min-w-50 items-center justify-center animate-pulse bg-slate-300 rounded-sm"
+    ></div>
+    <div
+      class="flex h-5 w-1/2 min-w-50 items-center justify-center animate-pulse bg-slate-300 rounded-sm"
+    ></div>
+  </section>
+</ng-template>

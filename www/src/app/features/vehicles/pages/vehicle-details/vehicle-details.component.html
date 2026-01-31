@@ -1,10 +1,62 @@
-<app-button label="Voltar" (handleClick)="handleGoBack()" />
-
-<ng-container *ngIf="vehicle; else loading">
-  id: {{ vehicle.id }} - placa: {{ vehicle.licensePlate | mask: MASKS.PLATE }} -
-  chassi: {{ vehicle.chassis | mask: MASKS.CHASSI }} - renavam:
-  {{ vehicle.renavam | mask: MASKS.RENAVAM }} - marca:
-  {{ vehicle.brand!.name }} - modelo: {{ vehicle.model!.name }} - ano:
-  {{ vehicle.year }}
-</ng-container>
-<ng-template #loading> Carregando detalhes do veículo... </ng-template>
+<main
+  class="m-6 bg-white divide-y divide-slate-300 overflow-hidden rounded-lg border border-slate-300"
+>
+  <header class="flex items-center px-5 py-4 gap-5">
+    <app-icon
+      name="arrow_back"
+      type="outlined"
+      (click)="handleGoBack()"
+      (keydown.enter)="handleGoBack()"
+      class="cursor-pointer text-sky-700"
+    />
+    <app-loadable-title
+      [isLoading]="isLoading"
+      title="Detalhes do veículo"
+      description="{{ vehicle?.model?.name }} {{ vehicle?.year }}"
+    />
+  </header>
+  <section class="p-5">
+    <div class="flex flex-col gap-6">
+      <app-details-row>
+        <app-details-cell
+          [isLoading]="isLoading"
+          title="Marca"
+          [description]="vehicle?.brand?.name || '--'"
+          class="col-span-3"
+        />
+        <app-details-cell
+          [isLoading]="isLoading"
+          title="Modelo"
+          [description]="vehicle?.model?.name || '--'"
+          class="col-span-3"
+        />
+        <app-details-cell
+          [isLoading]="isLoading"
+          title="Ano"
+          [description]="vehicle?.year || '--'"
+          class="col-span-3"
+        />
+      </app-details-row>
+      <app-details-row>
+        <app-details-cell
+          [isLoading]="isLoading"
+          title="Placa"
+          [description]="vehicle?.licensePlate | mask: MASKS.PLATE || '--'"
+          class="col-span-3"
+        />
+        <app-details-cell
+          [isLoading]="isLoading"
+          title="Chassi"
+          [description]="vehicle?.chassis | mask: MASKS.CHASSI || '--'"
+          class="col-span-3"
+        />
+        <app-details-cell
+          [isLoading]="isLoading"
+          title="Renavam"
+          [description]="vehicle?.renavam | mask: MASKS.RENAVAM || '--'"
+          class="col-span-3"
+        />
+      </app-details-row>
+    </div>
+  </section>
+</main>

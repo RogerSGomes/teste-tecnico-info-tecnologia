@@ -1,14 +1,31 @@
-import { Component, input, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { booleanAttribute, Component, input } from '@angular/core';
+import { IconComponent } from '../icon/icon.component';
+import { buttonVariants } from './button.variants';
 
 @Component({
-  imports: [],
+  imports: [CommonModule, IconComponent],
   selector: 'app-button',
   templateUrl: './button.component.html',
-  styleUrl: './button.component.css',
 })
 export class ButtonComponent {
-  label = input.required<string>();
-  disabled = input<boolean>(false);
+  readonly buttonVariants = buttonVariants;
 
-  handleClick = output<void>();
+  label = input.required<string>();
+  size = input<'xsmall' | 'small' | 'normal'>('small');
+  variant = input<'info' | 'success' | 'error'>('info');
+  appearance = input<
+    | 'contained'
+    | 'outlined'
+    | 'outlined_background'
+    | 'outlined_white'
+    | 'text'
+    | 'text_white'
+  >('contained');
+
+  icon = input<string>('');
+  iconType = input<'contained' | 'outlined'>('contained');
+  iconPosition = input<'left' | 'right' | null>(null);
+
+  disabled = input(false, { transform: booleanAttribute });
 }

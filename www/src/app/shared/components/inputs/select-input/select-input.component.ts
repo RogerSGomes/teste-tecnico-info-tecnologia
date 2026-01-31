@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { booleanAttribute, Component, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SubscriptSizing } from '@angular/material/form-field';
-import { MATERIAL_IMPORTS } from '../../material';
+import { MATERIAL_IMPORTS } from '../../../material';
 
 export interface SelectInputOption<T> {
   id: string;
