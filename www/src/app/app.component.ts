@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { COMPONENTS_IMPORTS } from './shared/components';
 
 @Component({
+  imports: [RouterOutlet, ...COMPONENTS_IMPORTS],
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'www';
-}
+export class AppComponent {}
