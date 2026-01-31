@@ -27,7 +27,12 @@ export class VehicleRepositoryImpl implements VehicleRepository {
 
   async findAll(): Promise<Vehicle[]> {
     try {
-      return await this.prisma.vehicle.findMany();
+      return await this.prisma.vehicle.findMany({
+        include: {
+          brand: true,
+          model: true,
+        },
+      });
     } catch (error) {
       throw new PrismaConsultException(error);
     }
@@ -37,6 +42,10 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     try {
       return await this.prisma.vehicle.findUnique({
         where: { id },
+        include: {
+          brand: true,
+          model: true,
+        },
       });
     } catch (error) {
       throw new PrismaConsultException(error);

@@ -17,13 +17,14 @@ datasource db {
 model Vehicle {
   id           String @id @default(uuid())
   brandId      String @map("fk_brand_id")
+  modelId      String @map("fk_model_id")
   licensePlate String @unique @map("license_plate")
   chassis      String @unique
   renavam      String @unique
-  model        String
   year         Int
 
-  brand Brand @relation(fields: [brandId], references: [id])
+  brand Brand      @relation(fields: [brandId], references: [id])
+  model BrandModel @relation(fields: [modelId], references: [id])
 
   @@map("vehicle")
 }
@@ -32,7 +33,20 @@ model Brand {
   id   String @id @default(uuid())
   name String @unique
 
-  vehicles Vehicle[]
+  vehicles    Vehicle[]
+  brandModels BrandModel[]
 
   @@map("brand")
+}
+
+model BrandModel {
+  id      String @id @default(uuid())
+  brandId String @map("fk_brand_id")
+  name    String
+
+  brand    Brand     @relation(fields: [brandId], references: [id])
+  vehicles Vehicle[]
+
+  @@unique([brandId, name])
+  @@map("brand_model")
 }

@@ -12,7 +12,6 @@ export class BrandsService {
     GET_BY_ID: (id: string) => `${this.baseURL}/${id}`,
     UPDATE: (id: string) => `${this.baseURL}/${id}`,
     DELETE: (id: string) => `${this.baseURL}/${id}`,
-    GET_MODELS_BY_BRAND: (brand: string) => `${this.baseURL}/models?brand=${brand}`,
   };
 
   constructor(private readonly http: HttpClient) {}
@@ -38,11 +37,5 @@ export class BrandsService {
 
   deleteBrand(id: string): Observable<BrandModel> {
     return this.http.delete<BrandModel>(this.API_ROUTES.DELETE(id));
-  }
-
-  getModelsByBrand(brand: string): Observable<string[]> {
-    return this.http.get<string[]>(this.API_ROUTES.GET_MODELS_BY_BRAND(brand), {
-      params: { brand },
-    });
   }
 }
